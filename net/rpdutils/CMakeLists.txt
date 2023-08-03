@@ -45,7 +45,7 @@ target_link_libraries(rpdutil INTERFACE $<$<PLATFORM_ID:Linux>:crypt>)
 set_property(TARGET rpdutil PROPERTY POSITION_INDEPENDENT_CODE ON)
 add_dependencies(rpdutil move_headers)
 
-ROOT_LINKER_LIBRARY(SrvAuth rpdutils.cxx
+ROOT_LINKER_LIBRARY(SrvAuth rpdutils.cxx ${CMAKE_SOURCE_DIR}/net/auth/src/DaemonUtils.cxx
   LIBRARIES
     ${OPENSSL_LIBRARIES}
     rpdutil

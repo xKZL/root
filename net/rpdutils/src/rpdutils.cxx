@@ -2551,6 +2551,11 @@ void RpdDefaultAuthAllow()
    gNumAllow++;
    gNumLeft++;
 
+   // SSH
+   gAllowMeth[gNumAllow] = 4;
+   gNumAllow++;
+   gNumLeft++;
+
    // No SRP method
    gHaveMeth[1] = 0;
 

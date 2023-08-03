@@ -20,6 +20,7 @@ ROOT_STANDARD_LIBRARY_PACKAGE(RootAuth
     THostAuth.h
     TRootAuth.h
     TRootSecContext.h
+    DaemonUtils.h
   SOURCES
     src/TAuthenticate.cxx
     src/THostAuth.cxx
@@ -31,6 +32,8 @@ ROOT_STANDARD_LIBRARY_PACKAGE(RootAuth
     Net
     RIO
 )
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../rpdutils/res)
 
 target_link_libraries(RootAuth PRIVATE rsa $<$<PLATFORM_ID:Linux>:crypt>)
 target_link_libraries(RootAuth PRIVATE rsa $<$<PLATFORM_ID:FreeBSD>:crypt>)
