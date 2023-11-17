@@ -833,6 +833,7 @@ if(pythia8)
   endif()
 endif()
 
+#---Check for FFTW3-------------------------------------------------------------------
 if(builtin_fftw3 AND NO_CONNECTION)
   if(fail-on-missing)
     message(FATAL_ERROR "No internet connection. Please check your connection, or either disable the 'builtin_fftw3' option or the 'fail-on-missing' to automatically disable options requiring internet access")
@@ -842,7 +843,6 @@ if(builtin_fftw3 AND NO_CONNECTION)
   endif()
 endif()
 
-#---Check for FFTW3-------------------------------------------------------------------
 if(fftw3)
   if(NOT builtin_fftw3)
     message(STATUS "Looking for FFTW3")
@@ -878,6 +878,55 @@ if(builtin_fftw3)
   set(FFTW_INCLUDE_DIR ${CMAKE_BINARY_DIR}/include)
   set(FFTW3_TARGET FFTW3)
   set(fftw3 ON CACHE BOOL "Enabled because builtin_fftw3 requested (${fftw3_description})" FORCE)
+endif()
+
+#---Check for KFR-------------------------------------------------------------------
+if(builtin_kfr AND NO_CONNECTION)
+  if(fail-on-missing)
+    message(FATAL_ERROR "No internet connection. Please check your connection, or either disable the 'builtin_kfr' option or the 'fail-on-missing' to automatically disable options requiring internet access")
+  else()
+    message(STATUS "No internet connection, disabling 'builtin_kfr' option")
+    set(builtin_kfr OFF CACHE BOOL "Disabled because there is no internet connection" FORCE)
+  endif()
+endif()
+
+if(kfr)
+  if(NOT builtin_kfr)
+    message(STATUS "Looking for KFR")
+    find_package(KFR)
+    if(NOT KFR_FOUND)
+      if(fail-on-missing)
+        message(FATAL_ERROR "KFR libraries not found and they are required (kfr option enabled)")
+      else()
+        message(STATUS "KFR not found. Set [environment] variable KFR_DIR to point to your KFR installation")
+        message(STATUS "                 Alternatively, you can also enable the option 'builtin_kfr' to build KFR internally'")
+        message(STATUS "                 For the time being switching OFF 'kfr' option")
+        set(kfr OFF CACHE BOOL "Disabled because KFR not found and builtin_kfr disabled (${kfr_description})" FORCE)
+      endif()
+    endif()
+  endif()
+endif()
+
+if(builtin_kfr)
+  set(KFR_URL "https://github.com/kfrlib/kfr/archive/refs/tags")
+  set(KFR_VERSION 5.1.0)
+  message(STATUS "Downloading and building KFR version ${KFR_VERSION}")
+  set(KFR_LIBRARIES ${CMAKE_BINARY_DIR}/lib/libkfr_dft.a ${CMAKE_BINARY_DIR}/lib/libkfr_io.a) # libkfr_capi.a is optional
+  ExternalProject_Add(
+    KFR
+    URL ${KFR_URL}/${KFR_VERSION}.tar.gz
+    URL_HASH SHA256=c624d425857473a344522054d9d3c72e6467ca8be734ad2dfab91156178b8769
+    INSTALL_DIR ${CMAKE_BINARY_DIR}
+    CMAKE_ARGS -G ${CMAKE_GENERATOR} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
+    BUILD_COMMAND ${CMAKE_COMMAND} --build .
+    LOG_DOWNLOAD 1 LOG_CONFIGURE 1 LOG_BUILD 1 LOG_INSTALL 1
+    BUILD_IN_SOURCE 1
+    BUILD_BYPRODUCTS ${KFR_LIBRARIES}
+    TIMEOUT 600
+  )
+  set(KFR_INCLUDE_DIR ${CMAKE_BINARY_DIR}/include)
+  set(KFR_TARGET KFR)
+  set(kfr ON CACHE BOOL "Enabled because builtin_kfr requested (${kfr_description})" FORCE)
 endif()
 
 #---Check for fitsio-------------------------------------------------------------------

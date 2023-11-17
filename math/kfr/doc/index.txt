@@ -1,0 +1,8 @@
+BEGIN_HTML
+This directory contains an implementation of the abstract class TVirtualFFT
+for the <b>KFR</b> package. For more information about <b>KFR</b> see:
+<ul>
+<li><a href="http://www.kfrlib.com/">the KFR home page
+    </a></li>
+</ul>
+END_HTML

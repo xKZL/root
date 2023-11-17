@@ -256,6 +256,11 @@ set(fftw3libdir ${FFTW3_LIBRARY_DIR})
 set(fftw3lib ${FFTW3_LIBRARY})
 set(fftw3incdir ${FFTW3_INCLUDE_DIR})
 
+set(buildkfr ${value${kfr}})
+set(kfrlibdir ${KFR_LIBRARY_DIR})
+set(kfrlib ${KFR_LIBRARY})
+set(kfrincdir ${KFR_INCLUDE_DIR})
+
 set(buildfitsio ${value${fitsio}})
 set(fitsiolibdir ${FITSIO_LIBRARY_DIR})
 set(fitsiolib ${FITSIO_LIBRARY})
