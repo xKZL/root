@@ -32,7 +32,7 @@ find_library(FFTW_LIBRARY NAMES fftw3 fftw3-3 PATHS
   /usr/local/lib
   /usr/lib
   /opt/fftw3/lib
-  DOC "Specify the fttw3 library here."
+  DOC "Specify the fftw3 library here."
 )
 
 if(FFTW_INCLUDE_DIR AND FFTW_LIBRARY)
